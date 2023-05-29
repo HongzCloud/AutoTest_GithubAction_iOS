@@ -22,9 +22,6 @@ jobs:
         sudo gem install cocoapods
         pod install
 
-    - name: Build Xcode Project
-      run: xcodebuild clean build -project AutoTest_GithubAction_iOS.xcodeproj -scheme AutoTest_GithubAction_iOS -destination "platform=iOS Simulator,name=iPhone 12" CODE_SIGNING_ALLOWED=NO
-
     - name: Build And Test Xcode Project
       run: |
         xcodebuild clean test -project AutoTest_GithubAction_iOS.xcodeproj \
