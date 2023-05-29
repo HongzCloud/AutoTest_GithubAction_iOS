@@ -31,7 +31,7 @@ jobs:
       run: xcodebuild clean build -project AutoTest_GithubAction_iOS.xcodeproj -scheme AutoTest_GithubAction_iOS -destination "platform=iOS Simulator,name=iPhone 12" CODE_SIGNING_ALLOWED=NO
 
     - name: Build And Test Xcode Project
-      run: |  // 여러가지 명령어를 사용할 때 "|" 입력
+      run: |
         xcodebuild clean test -project AutoTest_GithubAction_iOS.xcodeproj \
         -scheme AutoTest_GithubAction_iOSTests \
         -destination 'platform=iOS Simulator,name=iPhone 13,OS=latest'
