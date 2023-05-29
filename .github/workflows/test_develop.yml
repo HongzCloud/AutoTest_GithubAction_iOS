@@ -11,12 +11,39 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Xcode
+      uses: actions/setup-xcode@v2
+      with:
+        xcode-version: '13'
+
+    - name: Install CocoaPods
+      run: |
+        sudo gem install cocoapods
+        pod install
+
+    - name: Build Xcode Project
+      run: xcodebuild clean build -project AutoTest_GithubAction_iOS.xcodeproj -scheme AutoTest_GithubAction_iOS -destination "platform=iOS Simulator,name=iPhone 12" CODE_SIGNING_ALLOWED=NO
+
+    - name: Build And Test Xcode Project
+      run: |  // 여러가지 명령어를 사용할 때 "|" 입력
+        xcodebuild clean test -project AutoTest_GithubAction_iOS.xcodeproj \
+        -scheme AutoTest_GithubAction_iOSTests \
+        -destination 'platform=iOS Simulator,name=iPhone 13,OS=latest'
+        
+    - name: Archive Xcode Project
+      run: xcodebuild archive -project AutoTest_GithubAction_iOS.xcodeproj -scheme AutoTest_GithubAction_iOS -destination generic/platform=iOS -archivePath ./Build/AutoTest_GithubAction_iOS.xcarchive CODE_SIGNING_ALLOWED=NO
+
+    - name: Export Archive as IPA
+      run: xcodebuild -exportArchive -archivePath ./Build/AutoTest_GithubAction_iOS.xcarchive -exportPath ./Build -exportOptionsPlist ExportOptions.plist CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: AutoTest_GithubAction_iOS-IPA
+        path: ./Build/AutoTest_GithubAction_iOS.ipa
