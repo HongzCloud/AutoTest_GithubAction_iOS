@@ -25,7 +25,7 @@ jobs:
     - name: Build And Test Xcode Project
       run: |
         xcodebuild clean test -project AutoTest_GithubAction_iOS.xcodeproj \
-        -scheme AutoTest_GithubAction_iOSTests \
+        -scheme AutoTest_GithubAction_iOS \
         -destination 'platform=iOS Simulator,name=iPhone 13,OS=latest'
         
     - name: Archive Xcode Project
