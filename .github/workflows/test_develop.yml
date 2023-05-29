@@ -24,15 +24,3 @@ jobs:
 
     - name: Build And Test Xcode Project
       run: xcodebuild clean test -workspace AutoTest_GithubAction_iOS.xcworkspace -scheme AutoTest_GithubAction_iOS -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=latest'
-        
-    - name: Archive Xcode Project
-      run: xcodebuild archive -project AutoTest_GithubAction_iOS.xcodeproj -scheme AutoTest_GithubAction_iOS -destination generic/platform=iOS -archivePath ./Build/AutoTest_GithubAction_iOS.xcarchive CODE_SIGNING_ALLOWED=NO
-
-    - name: Export Archive as IPA
-      run: xcodebuild -exportArchive -archivePath ./Build/AutoTest_GithubAction_iOS.xcarchive -exportPath ./Build -exportOptionsPlist ExportOptions.plist CODE_SIGNING_ALLOWED=NO
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: AutoTest_GithubAction_iOS-IPA
-        path: ./Build/AutoTest_GithubAction_iOS.ipa
